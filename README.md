@@ -3,6 +3,29 @@
 This application is used to test how to manage encodings with Spray. Right now, the problem is that an UTF-8 value is
 interpreted as an ISO-8859-1 string, so the non-ASCII chars are broken.
 
+# The route
+
+The route I want to test (and the most interesting part of this project) is
+
+```scala
+post {
+  formFields('content) { (content) =>
+
+    resource.write("With UTF-8 = ")
+    resource.write(content)
+    resource.write("\n")
+
+    resource.write("With ISO-8859 = ")
+    resource.write(content)(Codec.ISO8859)
+    resource.write("\n")
+
+    _.complete("Ok")
+  }
+}
+```
+
+The full source is in [PagesService.scala](https://github.com/ayosec/spray-enc/blob/master/src/main/scala/com/ayosec/sprayencs/PagesService.scala)
+
 # Test it
 
 ## Install and run
