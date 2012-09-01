@@ -22,6 +22,8 @@ object GrapheneBuild extends Build {
     .settings(libraryDependencies ++=
       compile(akka: _*) ++
       compile(spray: _*) ++
-      compile(ioFile))
+      compile(ioFile) ++
+      container(jetty))
+    .settings(com.github.siasia.WebPlugin.webSettings: _*)
 
 }

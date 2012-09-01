@@ -17,6 +17,7 @@ object Dependencies {
   object V {
     val akka     = "2.0.3"
     val spray    = "1.0-M3-SNAPSHOT"
+    val jetty    = "8.1.0.v20120127"
   }
 
   // Logging
@@ -32,6 +33,8 @@ object Dependencies {
   // Scala IO
   val ioFile = "com.github.scala-incubator.io" %% "scala-io-file" % "0.4.1-seq"
   val ioCore = "com.github.scala-incubator.io" %% "scala-io-core" % "0.4.1-seq"
+
+  val jetty =  "org.eclipse.jetty"      %  "jetty-webapp"    % V.jetty
 
   // Dependency sets
   val akka = Seq(akkaActor, akkaRemote, akkaSlf4j)
