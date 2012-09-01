@@ -14,7 +14,7 @@ object GrapheneBuild extends Build {
     licenses              := Seq("Apache 2" -> new URL("http://www.apache.org/licenses/LICENSE-2.0.txt")),
     scalaVersion          := "2.9.2",
     resolvers             ++= Dependencies.resolutionRepos,
-    scalacOptions         := Seq("-deprecation", "-encoding", "utf8")
+    scalacOptions         := Seq("-Ydependent-method-types", "-deprecation", "-encoding", "utf8")
   )
 
   lazy val sprayEncs = Project("spray-encs", file("."))

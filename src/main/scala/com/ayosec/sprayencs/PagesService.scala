@@ -1,36 +1,55 @@
 package com.ayosec.sprayencs
 
+import java.io.File
+import org.parboiled.common.FileUtils
+import akka.util.Duration
+import akka.util.duration._
+import akka.actor.{ActorLogging, Props, Actor}
+import akka.pattern.ask
+import cc.spray.routing.{HttpService, RequestContext}
+import cc.spray.routing.directives.CachingDirectives
+import cc.spray.can.server.HttpServer
+import cc.spray.httpx.encoding.Gzip
+import cc.spray.http._
+import MediaTypes._
+import CachingDirectives._
 import cc.spray._
-import cc.spray.typeconversion._
-import akka.actor.{ActorSystem, Actor, Props}
+import routing.ApplyConverter._
 
 import scalax.io._
 
-trait PagesService extends Directives {
+class PagesServiceActor extends Actor with PagesService {
 
-  implicit val actorSystem: ActorSystem
+  def actorRefFactory = context
+
+  def receive = runRoute(pagesRoute)
+}
+
+trait PagesService extends HttpService {
 
   def resource = Resource.fromFile("/tmp/spray.test")
 
-  val routes = {
+  implicit val codec = Codec.UTF8
 
-    implicit val codec = Codec.UTF8
+  val pagesRoute = {
 
-    get {
-      _.complete(resource.string)
-    } ~
-    post {
-      formFields('content) { (content) =>
+    path("") {
+      get {
+        complete(resource.string)
+      } ~
+      post {
+        formFields('content) { (content) =>
 
-        resource.write("With UTF-8 = ")
-        resource.write(content)
-        resource.write("\n")
+          resource.write("With UTF-8 = ")
+          resource.write(content)
+          resource.write("\n")
 
-        resource.write("With ISO-8859 = ")
-        resource.write(content)(Codec.ISO8859)
-        resource.write("\n")
+          resource.write("With ISO-8859 = ")
+          resource.write(content)(Codec.ISO8859)
+          resource.write("\n")
 
-        _.complete("Ok")
+          complete("Ok")
+        }
       }
     }
   }

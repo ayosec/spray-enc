@@ -1,36 +1,27 @@
 package com.ayosec.sprayencs
 
-import cc.spray.io.pipelines.MessageHandlerDispatch
-import cc.spray.io.IoWorker
+import akka.actor.{Props, ActorSystem}
 import cc.spray.can.server.HttpServer
-import cc.spray._
-import akka.actor._
+import cc.spray.io.IOBridge
+import cc.spray.io.pipelining.MessageHandlerDispatch
 
 object Boot extends App {
   // we need an ActorSystem to host our application in
-  val system = ActorSystem()
 
-  val service = system.actorOf(
-    props = Props(new HttpService(new PagesService {
-      val actorSystem = system
-    }.routes)),
-    name = "service"
-  )
+  val system = ActorSystem("demo")
 
-  val rootService = system.actorOf(
-    props = Props(new SprayCanRootService(service)),
-    name = "spray-root-service"
-  )
+  val ioBridge = new IOBridge(system).start()
 
-  val ioWorker = new IoWorker(system).start()
-  val server = system.actorOf(
-    props = Props(new HttpServer(ioWorker, MessageHandlerDispatch.SingletonHandler(rootService))),
+  val service = system.actorOf(Props[PagesServiceActor], "demo-service")
+
+  val sprayCanServer = system.actorOf(
+    Props(new HttpServer(ioBridge, MessageHandlerDispatch.SingletonHandler(service))),
     name = "http-server"
   )
 
-  server ! HttpServer.Bind("localhost", 8080)
+  sprayCanServer ! HttpServer.Bind("localhost", 8080)
 
   system.registerOnTermination {
-    ioWorker.stop()
+    ioBridge.stop()
   }
 }
