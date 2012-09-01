@@ -46,7 +46,7 @@ Open the [test.html](https://github.com/ayosec/spray-enc/blob/master/test.html) 
 
 ## Test with `curl`
 
-Type
+With
 
 ```bash
 $ curl -d 'content=¿Más?' localhost:8080
@@ -66,7 +66,7 @@ I will send the string `¿Más? ✓`, which has some characters available on ISO
 
 ## With curl
 
-The request is generted with
+The request is generated with
 
 ```
 curl -d 'content=¿Más? ✓' localhost:8080
@@ -75,22 +75,14 @@ curl -d 'content=¿Más? ✓' localhost:8080
 The captured data:
 
 ```
-POST / HTTP/1.1.
-User-Agent: curl/7.27.0.
-Host: localhost:8080.
-Accept: */*.
-Content-Length: 19.
-Content-Type: application/x-www-form-urlencoded.
-.
-content=..M..s? ...
-##
-HTTP/1.1 200 OK.
-Content-Type: text/plain.
-Server: spray-can/1.0-M2.
-Date: Sat, 01 Sep 2012 03:17:41 GMT.
-Content-Length: 2.
-.
-Ok
+POST / HTTP/1.1
+User-Agent: curl/7.27.0
+Host: localhost:8080
+Accept: */*
+Content-Length: 19
+Content-Type: application/x-www-form-urlencoded
+
+content=..M..s? ..
 ```
 
 The dots in this output are non-ASCII characters. The two dots after `content=` means that curl sent the `¿` character in raw.
@@ -113,26 +105,18 @@ Using the `test.html`, we send the same string with a regular HTML form.
 The captured data:
 
 ```
-POST / HTTP/1.1.
-Host: localhost:8080.
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:16.0) Gecko/16.0 Firefox/16.0.
-Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8.
-Accept-Language: en-US,en;q=0.500.
-Accept-Encoding: gzip, deflate.
-Connection: keep-alive.
-Referer: http://localhost:10000/test.html.
-Content-Type: application/x-www-form-urlencoded.
-Content-Length: 34.
-.
+POST / HTTP/1.1
+Host: localhost:8080
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:16.0) Gecko/16.0 Firefox/16.0
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-US,en;q=0.500
+Accept-Encoding: gzip, deflate
+Connection: keep-alive
+Referer: http://localhost:10000/test.html
+Content-Type: application/x-www-form-urlencoded
+Content-Length: 34
+
 content=%BFM%E1s%3F+%26%2310003%3B
-##
-HTTP/1.1 200 OK.
-Content-Type: text/plain.
-Server: spray-can/1.0-M2.
-Date: Sat, 01 Sep 2012 03:25:03 GMT.
-Content-Length: 2.
-.
-Ok
 ```
 
 The `tmp/spray.test` file has
@@ -147,28 +131,20 @@ With ISO-8859 = �M�s? &#10003;
 The captured data:
 
 ```
-POST / HTTP/1.1.
-Host: localhost:8080.
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:14.0) Gecko/20100101 Firefox/14.0.1 Iceweasel/14.0.1.
-Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8.
-Accept-Language: es-es,es;q=0.8,en-us;q=0.5,en;q=0.3.
-Accept-Encoding: gzip, deflate.
-DNT: 1.
-Connection: keep-alive.
-Referer: http://localhost:10000/test.html.
-Cache-Control: max-age=0.
-Content-Type: application/x-www-form-urlencoded.
-Content-Length: 35.
-.
+POST / HTTP/1.1
+Host: localhost:8080
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:14.0) Gecko/20100101 Firefox/14.0.1 Iceweasel/14.0.1
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: es-es,es;q=0.8,en-us;q=0.5,en;q=0.3
+Accept-Encoding: gzip, deflate
+DNT: 1
+Connection: keep-alive
+Referer: http://localhost:10000/test.html
+Cache-Control: max-age=0
+Content-Type: application/x-www-form-urlencoded
+Content-Length: 35
+
 content=%C2%BFM%C3%A1s%3F+%E2%9C%93
-##
-HTTP/1.1 200 OK.
-Content-Type: text/plain.
-Server: spray-can/1.0-M2.
-Date: Sat, 01 Sep 2012 03:31:34 GMT.
-Content-Length: 2.
-.
-Ok
 ```
 
 The `tmp/spray.test` file has
@@ -183,29 +159,21 @@ With ISO-8859 = ¿Más? ✓
 The captured data:
 
 ```
-POST / HTTP/1.1.
-Host: localhost:8080.
-Connection: keep-alive.
-Content-Length: 34.
-Cache-Control: max-age=0.
-Origin: http://localhost:10000.
-User-Agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/536.11 (KHTML, like Gecko) Chrome/20.0.1132.57 Safari/536.11.
-Content-Type: application/x-www-form-urlencoded.
-Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8.
-Referer: http://localhost:10000/test.html.
-Accept-Encoding: gzip,deflate,sdch.
-Accept-Language: en-US,en;q=0.8.
-Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.3.
-.
+POST / HTTP/1.1
+Host: localhost:8080
+Connection: keep-alive
+Content-Length: 34
+Cache-Control: max-age=0
+Origin: http://localhost:10000
+User-Agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/536.11 (KHTML, like Gecko) Chrome/20.0.1132.57 Safari/536.11
+Content-Type: application/x-www-form-urlencoded
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Referer: http://localhost:10000/test.html
+Accept-Encoding: gzip,deflate,sdch
+Accept-Language: en-US,en;q=0.8
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.3
+
 content=%BFM%E1s%3F+%26%2310003%3B
-##
-HTTP/1.1 200 OK.
-Content-Type: text/plain.
-Server: spray-can/1.0-M2.
-Date: Sat, 01 Sep 2012 03:34:48 GMT.
-Content-Length: 2.
-.
-Ok
 ```
 
 The `tmp/spray.test` file has
@@ -228,24 +196,14 @@ puts Net::HTTP.post_form(URI("http://localhost:8080"), content: "¿Más? ✓").b
 The captured data:
 
 ```
-POST / HTTP/1.1.
-Accept: */*.
-User-Agent: Ruby.
-Content-Type: application/x-www-form-urlencoded.
-Host: localhost:8080.
-Content-Length: 35.
-.
+POST / HTTP/1.1
+Accept: */*
+User-Agent: Ruby
+Content-Type: application/x-www-form-urlencoded
+Host: localhost:8080
+Content-Length: 35
 
 content=%C2%BFM%C3%A1s%3F+%E2%9C%93
-##
-T 127.0.0.1:8080 -> 127.0.0.1:52827 [AP]
-HTTP/1.1 200 OK.
-Content-Type: text/plain.
-Server: spray-can/1.0-M2.
-Date: Sat, 01 Sep 2012 03:37:39 GMT.
-Content-Length: 2.
-.
-Ok
 ```
 
 The `tmp/spray.test` file has
