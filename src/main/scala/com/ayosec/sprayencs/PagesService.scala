@@ -35,7 +35,7 @@ trait PagesService extends HttpService {
 
     path("") {
       get {
-        complete(resource.string)
+        getFromResource("test.html")
       } ~
       post {
         formFields('content) { (content) =>
